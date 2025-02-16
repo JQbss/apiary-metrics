@@ -17,7 +17,7 @@ develop-eggs/
 lib/
 lib64/
 venv/
-.env
+src/.env
 
 # Django
 *.log
@@ -43,3 +43,5 @@ local_settings.py
 .Trashes
 ehthumbs.db
 Thumbs.db
+postgres_data/
+/src/env/
