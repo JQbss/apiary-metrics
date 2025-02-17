@@ -6,3 +6,4 @@ sqlparse==0.5.3
 django-environ==0.12.0
 django-cors-headers==4.7.0
 whitenoise==6.9.0
+drf-spectacular==0.28.0

@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 
 import environ
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ENV_DIR = BASE_DIR / 'env'
 env = environ.Env()
@@ -13,6 +12,9 @@ DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 SECRET_KEY = env("SECRET_KEY")
+
+DOCS_USERNAME = env('DOCS_USERNAME')
+DOCS_PASSWORD = env('DOCS_PASSWORD')
 
 # Application definition
 DJANGO_APPS = [
@@ -27,6 +29,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
+    'drf_spectacular',
 ]
 
 sys.path.append(str(BASE_DIR / 'apps'))
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.DocsBasicAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -72,6 +76,7 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
@@ -81,6 +86,23 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Apiary Metrics API',
+    'DESCRIPTION': 'API for managing apiaries and analyzing bee-related data',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    'SECURITY': [
+        {
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header',
+            }
+        }
+    ],
 }
 
 WSGI_APPLICATION = 'core.wsgi.application'
