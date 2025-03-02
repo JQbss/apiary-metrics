@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
-
+from datetime import timedelta
 import environ
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ENV_DIR = BASE_DIR / 'env'
 env = environ.Env()
@@ -16,6 +17,8 @@ SECRET_KEY = env("SECRET_KEY")
 DOCS_USERNAME = env('DOCS_USERNAME')
 DOCS_PASSWORD = env('DOCS_PASSWORD')
 
+AUTH_USER_MODEL = 'users.User'
+
 # Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -28,6 +31,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'drf_spectacular',
 ]
@@ -35,9 +39,9 @@ THIRD_PARTY_APPS = [
 sys.path.append(str(BASE_DIR / 'apps'))
 
 LOCAL_APPS = [
-    'accounts',
-    'apiaries',
     'analytics',
+    'apiaries',
+    'users',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -78,12 +82,12 @@ TEMPLATES = [
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
@@ -92,8 +96,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Apiary Metrics API',
     'DESCRIPTION': 'API for managing apiaries and analyzing bee-related data',
     'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-
+    'SERVE_INCLUDE_SCHEMA': True,
     'SECURITY': [
         {
             'Bearer': {
@@ -103,6 +106,20 @@ SPECTACULAR_SETTINGS = {
             }
         }
     ],
+    'SECURITY_REQUIREMENTS': [
+        {'Bearer': []}
+    ],
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 WSGI_APPLICATION = 'core.wsgi.application'
