@@ -12,39 +12,13 @@ class RegisterView(APIView):
     permission_classes = (AllowAny,)
 
     @extend_schema(
+        request=UserRegisterSerializer,
         summary='Register a new user',
         description='Create a new user account',
         responses={
             201: UserRegisterSerializer,
             400: 'Bad Request',
         },
-        parameters=[
-            OpenApiParameter(
-                name='username',
-                description='The username of the user',
-                type=str,
-            ),
-            OpenApiParameter(
-                name='email',
-                description='The email of the user',
-                type=str,
-            ),
-            OpenApiParameter(
-                name='password',
-                description='The password of the user',
-                type=str,
-            ),
-            OpenApiParameter(
-                name='password2',
-                description='The password confirmation',
-                type=str,
-            ),
-            OpenApiParameter(
-                name='role',
-                description='The role of the user',
-                type=str,
-            ),
-        ],
     )
     def post(self, request):
         serializer = UserRegisterSerializer(data=request.data)
