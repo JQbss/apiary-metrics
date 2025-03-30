@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.users.serializers import UserRegisterSerializer
+from apps.users.serializers import UserRegisterSerializer, UserUpdateSerializer, UserDetailsSerializer
 
 
 class RegisterViewSet(ViewSet):
@@ -50,26 +50,27 @@ class UserProfileViewSet(ViewSet):
         summary='Get user profile',
         description='Get the profile of the currently authenticated user',
         responses={
-            200: UserRegisterSerializer,
+            200: UserDetailsSerializer,
             401: 'Unauthorized',
         },
     )
     def list(self, request):
         user = request.user
-        serializer = UserRegisterSerializer(user)
+        serializer = UserDetailsSerializer(user)
         return Response(serializer.data)
 
     @extend_schema(
-        request=UserRegisterSerializer,
+        request=UserUpdateSerializer,
         summary='Update user profile',
         description='Update the profile of the currently authenticated user',
         responses={
-            200: UserRegisterSerializer,
+            200: UserUpdateSerializer,
             400: 'Bad Request',
         },
     )
-    def update(self, request):
-        serializer = UserRegisterSerializer(
+    @action(detail=False, methods=['patch'])
+    def patch(self, request, pk=None):
+        serializer = UserUpdateSerializer(
             request.user,
             data=request.data,
             partial=True
