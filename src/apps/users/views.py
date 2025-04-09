@@ -10,7 +10,7 @@ from apps.users.serializers import UserRegisterSerializer, UserUpdateSerializer,
 
 
 class RegisterViewSet(ViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
 
     @extend_schema(
         request=UserRegisterSerializer,
