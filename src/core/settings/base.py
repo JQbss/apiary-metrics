@@ -39,8 +39,7 @@ THIRD_PARTY_APPS = [
 sys.path.append(str(BASE_DIR / 'apps'))
 
 LOCAL_APPS = [
-    'analytics',
-    'apiaries',
+    'expenses',
     'users',
 ]
 
