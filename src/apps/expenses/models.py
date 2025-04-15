@@ -1,17 +1,18 @@
 from django.db import models
 from django.conf import settings
 
+
+class Category(models.TextChoices):
+    BEES = 'BEES', 'Bees'
+    BEESWAX = 'BEESWAX', 'Beeswax'
+    FOOD = 'FOOD', 'Food'
+    QUEEN = 'QUEEN', 'Queen'
+    TRANSPORT = 'TRANSPORT', 'Transport'
+    UTILITIES = 'UTILITIES', 'Utilities'
+    OTHER = 'OTHER', 'Other'
+
+
 class Expense(models.Model):
-    class Category(models.TextChoices):
-        BEES = 'BEES', 'Bees'
-        BEESWAX = 'BEESWAX', 'Beeswax'
-        FOOD = 'FOOD', 'Food'
-        QUEEN = 'QUEEN', 'Queen'
-        TRANSPORT = 'TRANSPORT', 'Transport'
-        UTILITIES = 'UTILITIES', 'Utilities'
-        OTHER = 'OTHER', 'Other'
-
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
