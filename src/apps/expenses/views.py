@@ -16,15 +16,6 @@ class ExpensesViewSet(ViewSet):
         request=ExpenseSerializer,
         summary='Create a new expense',
         description='Create a new expense for the authenticated user',
-        parameters=[
-            OpenApiParameter(
-                name='category',
-                type=OpenApiTypes.STR,
-                location=OpenApiParameter.QUERY,
-                enum=['BEES', 'BEESWAX', 'FOOD', 'QUEEN', 'TRANSPORT', 'UTILITIES', 'OTHER'],
-                description='Expense category'
-            ),
-        ],
         responses={
             201: ExpenseSerializer,
             400: 'Bad Request',
