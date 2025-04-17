@@ -1,4 +1,6 @@
 from django.db import models
+from utils.fields import LowerCaseField
+
 
 class Hive(models.Model):
     apiary = models.ForeignKey(
@@ -8,6 +10,7 @@ class Hive(models.Model):
     )
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    type = LowerCaseField(max_length=255, default='other')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

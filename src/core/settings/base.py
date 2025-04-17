@@ -40,7 +40,9 @@ sys.path.append(str(BASE_DIR / 'apps'))
 
 LOCAL_APPS = [
     'apiaries',
+    'expense_categories',
     'expenses',
+    'hive_types',
     'hives',
     'users',
 ]

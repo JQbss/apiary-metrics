@@ -1,29 +1,18 @@
 from django.db import models
 from django.conf import settings
 
-
-class Category(models.TextChoices):
-    BEES = 'BEES', 'Bees'
-    BEESWAX = 'BEESWAX', 'Beeswax'
-    FOOD = 'FOOD', 'Food'
-    QUEEN = 'QUEEN', 'Queen'
-    TRANSPORT = 'TRANSPORT', 'Transport'
-    UTILITIES = 'UTILITIES', 'Utilities'
-    OTHER = 'OTHER', 'Other'
+from utils.fields import LowerCaseField
 
 
 class Expense(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='expenses')
-
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.CharField(
-        max_length=20,
-        choices=Category.choices,
-        default=Category.OTHER
+        related_name='expenses'
     )
+
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+    category = LowerCaseField(max_length=255)
     date = models.DateField()
     description = models.CharField(max_length=255)
     quantity = models.IntegerField()
@@ -39,4 +28,4 @@ class Expense(models.Model):
         ordering = ['date']
 
     def __str__(self):
-        return f'{self.user.email} - {self.category} - {self.amount}'
+        return f'{self.user.email} - {self.category} - {self.cost}'
