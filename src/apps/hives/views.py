@@ -14,7 +14,7 @@ class HivesViewSet(ViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return self.serializer_class.Meta.model.objects.filter(apiary__user=user)
+        return self.serializer_class.Meta.model.objects.filter(apiary__user=user).select_related('apiary')
 
     @extend_schema(
         summary='Create a new hive',
@@ -72,12 +72,6 @@ class HivesViewSet(ViewSet):
     def update(self, request, pk=None):
         try:
             hive = self.serializer_class.Meta.model.objects.get(pk=pk)
-            if not request.user.apiarymembership_set.filter(
-                    apiary_id=hive.apiary.id,
-                    role__in=['ADMIN', 'OWNER', 'EDITOR']
-            ).exists():
-                return Response({'detail': 'You do not have permission to access this hive.'}, status=403)
-
             serializer = self.serializer_class(
                 hive,
                 data=request.data,

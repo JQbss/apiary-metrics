@@ -8,7 +8,6 @@ from apps.apiaries.models import ApiaryMembership, ApiaryRole
 from apps.apiaries.serializers import ApiarySerializer, ApiaryMembershipAddUserSerializer
 
 
-# Create your views here.
 class ApiariesViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ApiarySerializer
