@@ -24,7 +24,6 @@ class HiveInspectionsViewSet(ViewSet):
         },
     )
     def create(self, request):
-        print("Request data:", request.data)
         serializer = self.serializer_class(
             data=request.data,
             context={'request': request}
@@ -52,7 +51,6 @@ class HiveInspectionsViewSet(ViewSet):
     )
     def list(self, request):
         hive_id = request.query_params.get('hive_id')
-        print ("user request", request.user)
         if hive_id:
             try:
                 hive = Hive.objects.get(

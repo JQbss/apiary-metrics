@@ -4,6 +4,7 @@ from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 urlpatterns = [
     path('users/', include('apps.users.urls')),
     path('apiaries/', include('apps.apiaries.urls')),
+    path('apiary_notes/', include('apps.apiary_notes.urls')),
     path('expenses/', include('apps.expenses.urls')),
     path('expense_categories/', include('apps.expense_categories.urls')),
     path('hives/', include('apps.hives.urls')),
