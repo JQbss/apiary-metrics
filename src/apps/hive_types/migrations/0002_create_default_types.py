@@ -2,8 +2,9 @@
 
 from django.db import migrations
 
+
 def create_default_types(apps, schema_editor):
-    HiveType = apps.get_model('hive_types', 'HiveType')
+    hive_type_model = apps.get_model('hive_types', 'HiveType')
 
     types = [
         'Langstroth',
@@ -19,14 +20,15 @@ def create_default_types(apps, schema_editor):
     ]
 
     # Create default types if they don't exist
-    for hiveType in types:
-        HiveType.objects.get_or_create(name=hiveType)
+    for hive_type in types:
+        hive_type_model.objects.get_or_create(name=hive_type)
+
 
 def reverse_create_default_types(apps, schema_editor):
-    HiveType = apps.get_model('hive_types', 'HiveType')
+    hive_type_model = apps.get_model('hive_types', 'HiveType')
 
     # Delete all types created by this migration
-    HiveType.objects.filter(name__in=[
+    hive_type_model.objects.filter(name__in=[
         'Langstroth',
         'Top Bar',
         'Warre',
@@ -39,8 +41,8 @@ def reverse_create_default_types(apps, schema_editor):
         'Other'
     ]).delete()
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ('hive_types', '0001_initial'),
     ]

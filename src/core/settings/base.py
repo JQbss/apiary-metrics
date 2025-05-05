@@ -42,6 +42,7 @@ LOCAL_APPS = [
     'apiaries',
     'apiary_notes',
     'queens',
+    'queen_types',
     'expense_categories',
     'expenses',
     'hive_inspections',
