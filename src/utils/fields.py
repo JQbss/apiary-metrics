@@ -10,3 +10,10 @@ class LowerCaseField(model.CharField):
         if value is not None:
             return value.lower()
         return value
+
+
+class UnitField(model.TextChoices):
+    KG = 'kg', 'Kilograms'
+    G = 'g', 'Grams'
+    L = 'l', 'Liters'
+    ML = 'ml', 'Milliliters'

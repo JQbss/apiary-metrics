@@ -41,6 +41,8 @@ sys.path.append(str(BASE_DIR / 'apps'))
 LOCAL_APPS = [
     'apiaries',
     'apiary_notes',
+    'harvests',
+    'harvest_types',
     'queens',
     'queen_notes',
     'queen_types',
