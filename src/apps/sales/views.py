@@ -1,22 +1,22 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework.viewsets import ViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 
-from apps.expenses.models import Expense
-from apps.expenses.serializers import ExpenseSerializer
+from apps.sales.models import Sale
+from apps.sales.serializers import SaleSerializer
 
 
-class ExpensesViewSet(ViewSet):
+class SaleViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
-    serializer_class = ExpenseSerializer
+    serializer_class = SaleSerializer
 
     @extend_schema(
-        request=ExpenseSerializer,
-        summary='Create a new expense',
-        description='Create a new expense for the authenticated user',
+        request=SaleSerializer,
+        summary='Create a new sale',
+        description='Create a new sale for the authenticated user',
         responses={
-            201: ExpenseSerializer,
+            201: SaleSerializer,
             400: 'Bad Request',
         },
     )
@@ -28,59 +28,57 @@ class ExpensesViewSet(ViewSet):
         return Response(serializer.errors, status=400)
 
     @extend_schema(
-        summary='List all expenses',
-        description='Retrieve a list of all expenses for the authenticated user',
+        summary='List all sales',
+        description='Retrieve a list of all sales for the authenticated user',
         responses={
-            200: ExpenseSerializer(many=True),
-            401: 'Unauthorized',
+            200: SaleSerializer(many=True),
         },
     )
     def list(self, request):
-        user = request.user
-        expenses = user.expenses.all()
-        serializer = self.serializer_class(expenses, many=True)
+        sales = request.user.sales.all()
+        serializer = self.serializer_class(sales, many=True)
         return Response(serializer.data)
 
     @extend_schema(
-        summary='Retrieve an expense',
-        description='Retrieve a specific expense for the authenticated user',
+        summary='Retrieve a sale',
+        description='Retrieve a specific sale by its ID',
         responses={
-            200: ExpenseSerializer,
+            200: SaleSerializer,
             404: 'Not Found',
         },
     )
     def retrieve(self, request, pk=None):
         try:
-            expense = request.user.expenses.get(pk=pk)
-            serializer = self.serializer_class(expense)
+            sale = request.user.sales.get(pk=pk)
+            serializer = self.serializer_class(sale)
             return Response(serializer.data)
-        except Expense.DoesNotExist:
+        except Sale.DoesNotExist:
             return Response({'detail': 'Not found'}, status=404)
 
     @extend_schema(
-        request=ExpenseSerializer,
-        summary='Update an expense',
-        description='Update a specific expense for the authenticated user',
+        summary='Update a sale',
+        description='Update a specific sale by its ID',
+        request=SaleSerializer,
         responses={
-            200: ExpenseSerializer,
+            200: SaleSerializer,
             400: 'Bad Request',
             404: 'Not Found',
         },
     )
     def update(self, request, pk=None):
         try:
-            expense = request.user.expenses.get(pk=pk)
-            serializer = self.serializer_class(expense, data=request.data)
+            sale = request.user.sales.get(pk=pk)
+            serializer = self.serializer_class(sale, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=400)
-        except Expense.DoesNotExist:
+        except Sale.DoesNotExist:
             return Response({'detail': 'Not found'}, status=404)
 
     @extend_schema(
-        summary='Delete an expense',
-        description='Delete a specific expense for the authenticated user',
+        summary='Delete a sale',
+        description='Delete a specific sale by its ID',
         responses={
             204: 'No Content',
             404: 'Not Found',
@@ -88,8 +86,8 @@ class ExpensesViewSet(ViewSet):
     )
     def destroy(self, request, pk=None):
         try:
-            expense = request.user.expenses.get(pk=pk)
-            expense.delete()
+            sale = request.user.sales.get(pk=pk)
+            sale.delete()
             return Response(status=204)
-        except Expense.DoesNotExist:
+        except Sale.DoesNotExist:
             return Response({'detail': 'Not found'}, status=404)

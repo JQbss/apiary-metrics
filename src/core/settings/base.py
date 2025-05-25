@@ -48,6 +48,8 @@ LOCAL_APPS = [
     'queen_types',
     'expense_categories',
     'expenses',
+    'sales',
+    'sale_types',
     'hive_inspections',
     'hive_types',
     'hives',
