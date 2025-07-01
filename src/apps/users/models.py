@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from apps.languages.models import Language
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,6 +30,8 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30, blank=True, null=True, verbose_name='first name')
     last_name = models.CharField(max_length=150, blank=True, null=True, verbose_name='last name')
     avatar = models.ImageField(upload_to='users/', blank=True, null=True, verbose_name='avatar')
+    language = models.OneToOneField(Language, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='language')
+    
 
     username = None
     USERNAME_FIELD = 'email'

@@ -17,6 +17,7 @@ urlpatterns = [
     path('hives/', include('apps.hives.urls')),
     path('hive_inspections/', include('apps.hive_inspections.urls')),
     path('hive_types/', include('apps.hive_types.urls')),
+    path('languages/', include('apps.languages.urls')),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
 ]

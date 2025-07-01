@@ -25,12 +25,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'avatar']
+        fields = ['first_name', 'last_name', 'avatar', 'language']
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.language = validated_data.get('language', instance.language)
         instance.save()
         return instance
 
@@ -38,5 +39,5 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'avatar']
+        fields = ['id', 'email', 'first_name', 'last_name', 'avatar', 'language']
         read_only_fields = ['id']
