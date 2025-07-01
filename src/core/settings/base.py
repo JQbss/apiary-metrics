@@ -53,6 +53,7 @@ LOCAL_APPS = [
     'hive_inspections',
     'hive_types',
     'hives',
+    'languages',
     'users',
 ]
 
